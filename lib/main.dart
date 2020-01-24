@@ -6,6 +6,7 @@ import 'package:infinate_list/Bloc/simple_bloc_delegate.dart';
 import 'package:infinate_list/Model/post.dart';
 import 'Bloc/post_bloc.dart';
 import 'Bloc/post_event.dart';
+import 'package:bloc/bloc.dart';
 
 void main() { 
   BlocSupervisor.delegate = SimpleBlocDelegate();
@@ -67,13 +68,13 @@ class _HomePageState extends State<HomePage> {
         // ketika suatu state error 
         if(state is PostError){ 
           return Center( 
-            child: Text(state.error),
+            child: Text("error"),
           ); 
         }  
         // ketika suatu state postloaded 
         if(state is PostLoaded){  
           // jika data kosong
-          if(state.post.isEmpty){ 
+          if(state.posts.isEmpty){ 
             return Center( 
               child: Text("no posts"),
             );
@@ -81,18 +82,22 @@ class _HomePageState extends State<HomePage> {
           // jika data tidak kosing 
           return ListView.builder( 
             itemBuilder: (BuildContext context, int index){  
-              return index >= state.post.length 
+              return index >= state.posts.length 
               // jika jumlah data lebih atau sama dengan index
               ? BottomLoader()  
               // selain dari itu 
-              : PostWidget(post: state.post[index]);
+              : PostWidget(post: state.posts[index]);
             }, 
             // jika list max  maka jumlah data  sebanyak jumlah post 
             itemCount: state.hasReachedMax 
             // jika belum max maka jumlah data sebanyak jumlah post pluss satu  
-            ? state.post.length : state.post.length+1,
+            ? state.posts.length : state.posts.length+1,
+            controller: _scrollController,
           );
         }
+        return Center(
+          child: CircularProgressIndicator(),
+        );
       }
     );
   }

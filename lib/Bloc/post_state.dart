@@ -1,46 +1,46 @@
-import 'package:equatable/equatable.dart'; 
-import 'package:infinate_list/Model/model.dart';
-import 'package:infinate_list/Model/post.dart'; 
-abstract class PostState extends Equatable { 
-  const PostState();  
-  @override 
-  List<Object> get props => []; 
+import 'package:equatable/equatable.dart';
+
+import 'package:infinate_list/Model/post.dart';
+
+abstract class PostState extends Equatable {
+  const PostState();
+
+  @override
+  List<Object> get props => [];
 }
 
-// call fungsi error 
-class PostError extends PostState{ 
-  final String error;
-  const PostError ({  
-    this.error
-  }); 
-}
+// inisialisasi awal
+class PostUninitialized extends PostState {}
 
-class PostUninitialized extends PostState{ 
+// kerika error
+class PostError extends PostState {}
 
-} 
-class PostLoaded extends PostState{ 
-  final List<Post> post; 
-  final bool hasReachedMax; 
-  const PostLoaded ({  
-    this.post, 
-    this.hasReachedMax
-  }); 
+// get the parameter to send into display 
+class PostLoaded extends PostState {
+  final List<Post> posts;
+  final bool hasReachedMax;
+
+  const PostLoaded({
+    this.posts,
+    this.hasReachedMax,
+  });
+
+// defination constructor
   PostLoaded copyWith({ 
-    List<Post> posts, 
-    bool hasReachedmax,
-  }){ 
-    return PostLoaded(  
-      // menampung data dalam sebuah array 
-      post: posts ?? this.post,  
-      // mengecek apakah size aplikasi sudah mencapai maximum 
-      hasReachedMax: hasReachedmax ?? this.hasReachedMax 
+    // display of list 
+    List<Post> post,
+    bool hasReachedMa,
+  }) {
+    return PostLoaded(
+      posts: post ?? posts,
+      hasReachedMax: hasReachedMa ?? hasReachedMax,
     );
   }
 
-  @override 
-  List<Object> get props => [post, hasReachedMax]; 
+  @override
+  List<Object> get props => [posts, hasReachedMax];
 
-  @override 
-  String toString()=> 
-  'PostLoaded {posts: ${post.length}, hasReachedmax: $hasReachedMax}';
+  @override
+  String toString() =>
+      'PostLoaded { posts: ${posts.length}, hasReachedMax: $hasReachedMax }';
 }
